@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Clean Blog - Sample Post</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/clean-blog.min.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+	<style>
+		table {
+		  font-family: arial, sans-serif;
+		  border-collapse: collapse;
+		  width: 100%;
+		}
+
+		td, th {
+		  border: 1px solid #dddddd;
+		  text-align: left;
+		  padding: 8px;
+		}
+
+		tr:nth-child(even) {
+		  background-color: #dddddd;
+		}
+	</style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Kostas Michailidis Tech</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="index.html">Home</a>
+                    </li>
+                    <li>
+                        <a href="about.html">About</a>
+                    </li>                
+                    <li>
+                        <a href="contact.html">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header class="intro-header" style="background-image: url('img/ethernet-dark-post-bg.png')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        <h1>Ethernet cables, how they work</h1>
+                        <h2 class="subheading">The cables behind your local network</h2>
+                        <span class="meta">Posted by <a href="about.html">Kostas Michailidis</a> on September 3, 2023</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Post Content -->
+    <article>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <p>We all know what an ethernet cable is, right? maybe not exactly
+                       sometimes not everything is so obvious, let's first clarify something
+                       ethernet is not a specific cable, it is a wired standard
+                       of local networking, so when we say ethernet cable we are not referring to anything
+                       specifically, what we want to say is a <b>UTP</b> ethernet cable,
+                       where it means UNSHIELDED TWISTED PAIRS, where UNSHIELDED tells us that it is unshielded
+                       and TWISTED PAIRS that have twisted pairs of cables inside.</p>
+
+                    <p>Now you will wonder if there is an unshielded cable, there will also be an shielded cable too; 
+					   yes it exists and we generally call it <b>STP</b> cable but there are many related categories with the 
+					   way of shielding the cable and with different specifications, but the most general name we use is <b>UTP</b> cable.</p>
+                    
+					<figure>
+					   <img class="img-responsive" src="img/post-sample-image.jpg" alt="u/utp cable">
+					   <center><figcaption>u/utp cable</figcaption></center>
+                    </figure>
+
+                    <h2 class="section-heading">ISO/IEC 11801 names</h2>
+
+                    <p>Cable names according to the standard ISO/IEC 11801 are <b>u/utp , u/ftp , f/utp , s/utp, sf/utp, f/ftp , s/ftp,</b> 
+					 we will explain what each of these means in a minute but first we need understand how this naming works,</p>
+
+                    <p>Let's take <b>u/utp</b> for example <b>u</b> stands for <b>unshielded</b> and <b>tp</b> for <b>twisted pairs</b> as we previously discussed, but why we have two <b>u's</b> like this <b>u/u</b>;
+                       the one outeside of slash <b>u</b>/utp means the type of shielding of the cable as a whole
+                       and the one in the inside u/<b>u</b>tp means the type of shielding for each pair of cables inside,
+					   in this case we have no shielding in both the cable as a whole but also for each individual cable pair inside.</p>
+
+                    <p>In the next table we can see what each of this types means, also note that <b>s</b> stands for <b>shielded</b> which is a metal net and <b>f</b> stands for <b>foil</b>
+                       which is an aluminium foil.</p>
+					<table>
+								  <tr>
+									<th>ISO/IEC 11801 names</th>
+									<th>Shielding of cable</th>
+									<th>Shielding of pairs</th>
+								  </tr>
+								  <tr>
+									<td>U/UTP</td>
+									<td>none</td>
+									<td>none</td>
+								  </tr>
+								  <tr>
+									<td>U/FTP</td>
+									<td>none</td>
+									<td>aluminium foil</td>
+								  </tr>
+								  <tr>
+									<td>F/UTP</td>
+									<td>aluminium foil</td>
+									<td>none</td>
+								  </tr>
+								  <tr>
+									<td>S/UTP</td>
+									<td>metal net</td>
+									<td>none</td>
+								  </tr>
+								  <tr>
+									<td>SF/UTP</td>
+									<td>metal net, aluminium foil</td>
+									<td>none</td>
+								  </tr>
+								  <tr>
+									<td>F/FTP</td>
+									<td>aluminium foil</td>
+									<td>aluminium foil</td>
+								  </tr>
+								   <tr>
+									<td>S/FTP</td>
+									<td>metal net</td>
+									<td>aluminium foil</td>
+								  </tr>
+								  
+					</table>
+                    <p>The shielding of a cable helps to reduce problems with EMI (Electromagnetic interference) and noise.</p>
+                    <h2 class="section-heading">Cable Categories CAT</h2>
+
+                    <p>In ethernet we have different categories of cables from CAT 3 up to CAT 8 as i'm writing this , the difference between these categories is
+                       the maximum speed they can handle without having any crosstalk (interference).</p>
+
+                    <figure>
+						<img class="img-responsive" src="img/Cat-5e.jpg" alt="cat5e">
+						<center><figcaption>CAT-5e cable</figcaption></center>
+                    </figure>
+					
+                    <p>The numbers represent the tightness of the twists that are applied to the wires , 
+					 in the following table we can see the speeds of each category , 
+					 please note that these can vary depending of the manufacturer.</p>
+					 
+					<table>
+								  <tr>
+									<th>Category</th>
+									<th>Speed</th>
+									<th>Advantages</th>
+								  </tr>
+								  <tr>
+									<td>CAT 3</td>
+									<td>10 Mbps</td>
+									<td></td>
+								  </tr>
+								  <tr>
+									<td>CAT 5</td>
+									<td>100 Mbps</td>
+									<td></td>
+								  </tr>
+								  <tr>
+									<td>CAT 5e</td>
+									<td>1 Gbps</td>
+									<td>Enhanced</td>
+								  </tr>
+								  <tr>
+									<td>CAT 6</td>
+									<td>1 Gbps</td>
+									<td>10 Gbps (cable length under 100 meters)</td>
+								  </tr>
+								  <tr>
+									<td>CAT 6a</td>
+									<td>10 Gbps</td>
+									<td>Augmented</td>
+								  </tr>
+								  <tr>
+									<td>CAT 7</td>
+									<td>10 Gbps</td>
+									<td>Added shielding to the wires</td>
+								  </tr>
+								   <tr>
+									<td>CAT 8</td>
+									<td>40 Gbps</td>
+									<td>Added shielding to the wires</td>
+								  </tr>
+								  
+					</table>
+					
+					<p>CAT 3 and CAT 5 are obsolete and they are not used today.</p>
+                    
+					<h2 class="section-heading">Straight through vs Crossover</h2>
+					
+					<p>You may hear  the term straight through and crossover when we talk about ethernet cables but what all this mean and 
+					 what is the difference between this two? first we need to talk about the <b>8p8c</b> (aka <b>rj45</b>) connector which is 
+					 the connector of a utp cable which have 8 pins in front.</p>
+					 <figure>
+						<img class="img-responsive" src="img/rj45con.jpg" alt="cat5e">
+						<center><figcaption>8p8c "rj45" connector</figcaption></center>
+                    </figure>
+					
+					<p>When we terminating the end of a cable with an rj45 connector we need to think about the order of of the wires, 
+					   what goes in each pin, we can do that with the coloring of the wires and using one of the two
+					   standards <b>T 568 A</b> and <b>T 568 B</b>, in the following table we can see both standards.</p>
+
+					<table>
+								  <tr>
+									<th>Pin number</th>
+									<th>T 568 A</th>
+									<th>T 568 B</th>
+								  </tr>
+								  <tr>
+									<td>1</td>
+									<td>white/green</td>
+									<td>white/orange</td>
+								  </tr>
+								  <tr>
+									<td>2</td>
+									<td>green</td>
+									<td>orange</td>
+								  </tr>
+								  <tr>
+									<td>3</td>
+									<td>white/orange</td>
+									<td>white/green</td>
+								  </tr>
+								  <tr>
+									<td>4</td>
+									<td>blue</td>
+									<td>blue</td>
+								  </tr>
+								  <tr>
+									<td>5</td>
+									<td>white/blue</td>
+									<td>white/blue</td>
+								  </tr>
+								  <tr>
+									<td>6</td>
+									<td>orange</td>
+									<td>green</td>
+								  </tr>
+								   <tr>
+									<td>7</td>
+									<td>white/brown</td>
+									<td>white/brown</td>
+								  </tr>
+								  <tr>
+									<td>8</td>
+									<td>brown</td>
+									<td>brown</td>
+								  </tr>
+								  
+					</table>
+					
+					<p>When we implementing the same standard in both ends of the cable we have a <b>straight through</b> cable and when we use a different standard in each end then we have a <b>crossover</b> cable
+  					 , a straight through cable is used for connecting different types of devices
+                       like a PC with a switch or a hub, a crossover cable is used for connecting the same types of devices like a PC with PC or switch with switch, in reality both cables can do the 
+					   job when connecting modern systems but it's good to know how they work.</p>
+				
+  				    <p>The reason we used a different type of cable, for exaple a <b>crossover</b>,  was because on a computer pins <b>1</b> and <b>2</b> was only
+				 	   for transmitting signal and <b>3</b> and <b>6</b> was only for receiving it , by changing the order of wires in one end 
+                       we succeed to redirect the transmitting signal of one computer to the receiving point of the other computer.</p>
+                    
+					<h2 class="section-heading">It's that all ?</h2>
+					<p>We only talk about the twisted pair cables but there's also fiber ethernet cables , 
+					  we have alot to learn but that's all for now , i hope to see you in another article , In the meantime keep learning!</p>
+					  
+					
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <ul class="list-inline text-center">                      
+                        <li>
+                            <a href="https://github.com/mihkostas">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                    <p class="copyright text-muted">Copyright &copy; Your Website 2014</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="js/clean-blog.min.js"></script>
+
+</body>
+
+</html>
