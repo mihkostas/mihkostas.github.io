@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Kostas Michailidis Tech - Nginx</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/clean-blog.min.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+	<style>
+		table {
+		  font-family: arial, sans-serif;
+		  border-collapse: collapse;
+		  width: 100%;
+		}
+
+		td, th {
+		  border: 1px solid #dddddd;
+		  text-align: left;
+		  padding: 8px;
+		}
+
+		tr:nth-child(even) {
+		  background-color: #dddddd;
+		}
+	</style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Kostas Michailidis Tech</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="index.html">Home</a>
+                    </li>
+                    <li>
+                        <a href="about.html">About</a>
+                    </li>                
+                    <li>
+                        <a href="contact.html">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header class="intro-header" style="background-image: url('img/webser_img-modified.png')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        <h1>Installing a web server (nginx)</h1>
+                        <h2 class="subheading">The server behind the web</h2>
+                        <span class="meta">Posted by <a href="about.html">Kostas Michailidis</a> on February 27, 2024</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Post Content -->
+    <article>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <h2 class="section-heading">What is Nginx?</h2>
+                     
+                    <p>Nginx is an open source web server used for serving websites, load balancing, reverse proxying, and other HTTP and proxy server capabilities,
+					   it is similar to the Apache web server, but for this tutorial we will focus on nginx.
+					</p>
+                    
+				    
+
+                    <h2 class="section-heading">Install and configure Nginx</h2>
+
+                    <p>We are going to install nginx on debian based distributions of linux in my case is debian 11.</p>
+					<p>First we open up a terminal and we are going to update the list of available packages of the system.</p>
+                    <code>sudo apt update</code>
+					<p>Then we install nginx</p>
+					<code>sudo apt install nginx</code>
+                    <p>We can check if nginx has started with</p>
+					<code>sudo systemctl status nginx</code>
+					<p>We should see something similar to the following</p>
+					<figure>
+						<img class="img-responsive" src="img/isnginx_run.png" alt="">
+                    </figure>
+					<p>If not, we can start the server with the following command</p>
+					<code>sudo systemctl start nginx</code>
+					<p>We can also configure nginx to start when we boot the system</p>
+					<code>sudo systemctl enable nginx</code>
+					<p>If for some reason we want to disable it we can</p>
+					<code>sudo systemctl disable nginx</code>
+					<p>Then we can go to a web browser and put the local ip address of the system we are running nginx, we can also use the loopback address 127.0.0.1 if we are in the same system.</p>
+					<p>We should see the default web page of nginx if everything works.</p>
+					<figure>
+						<img class="img-responsive" src="img/it_works_yes.png" alt="">
+                    </figure>
+					<p>Then we can create the directory of our web page,
+						in my case im going to name it <b>mytest</b>.</p>
+					<code>sudo mkdir /var/www/mytest</code>
+					<p>After that we can create an html file with the code of our page (we must name it index.html), you can use whatever text editor you are familiar with , in my case im going to use Vim.</p>
+					<code>sudo vim /var/www/mytest/index.html</code>
+	                <p>and we save it</p>				
+					<figure>
+						<img class="img-responsive" src="img/myhtmlcode.png" alt="">
+                    </figure>
+					<p>After that we need to create a copy of the default configuration and name it after our website.</p>
+					<code>sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/mytest</code>
+					<p>and we need to change the line <b>root /var/www/html;</b> with <b>root /var/www/mytest;</b></p>
+					<code>sudo vim /etc/nginx/sites-available/mytest</code>
+					<p>and we save it</p>
+					<figure>
+						<img class="img-responsive" src="img/change_avl_file.png" alt="">
+                    </figure>
+					<p>We must create a soft link to <b>sites-enabled</b> of the <b>mytest</b> config in <b>sites-available</b>.</p>
+					<code>sudo ln -s /etc/nginx/sites-available/mytest /etc/nginx/sites-enabled/</code>
+					<p>We remove the default web page soft link from <b>sites-enabled</b>.</p>
+                    <code>sudo rm /etc/nginx/sites-enabled/default</code>
+                    <p>and we are reloading the configuration of the server.</p>
+                    <code>sudo systemctl reload nginx</code>
+					<p>We should see the following in the browser.</p>
+					<figure>
+						<img class="img-responsive" src="img/mytest_works.png" alt="">
+                    </figure>
+					
+					
+					
+					<h2 class="section-heading">It's that all ?</h2>
+					<p>This is a basic installation and configuration of nginx web server without ssl, which i'm going to talk more about it in the future.</p>
+					  
+					
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <ul class="list-inline text-center">                      
+                        <li>
+                            <a href="https://github.com/mihkostas">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16">
+  					<path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			    	</svg>
+                            </a>
+                        </li>
+                    </ul>
+                    <p class="copyright text-muted">&copy; Kostas Michailidis Tech 2023</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="js/clean-blog.min.js"></script>
+
+</body>
+
+</html>
