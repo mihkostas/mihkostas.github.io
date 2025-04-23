@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Kostas Michailidis Tech - ARP</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/clean-blog.min.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+	<style>
+		table {
+		  font-family: arial, sans-serif;
+		  border-collapse: collapse;
+		  width: 100%;
+		}
+
+		td, th {
+		  border: 1px solid #dddddd;
+		  text-align: left;
+		  padding: 8px;
+		}
+
+		tr:nth-child(even) {
+		  background-color: #dddddd;
+		}
+	</style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Kostas Michailidis Tech</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="index.html">Home</a>
+                    </li>
+                    <li>
+                        <a href="about.html">About</a>
+                    </li>                
+                    <li>
+                        <a href="contact.html">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header class="intro-header" style="background-image: url('img/arp_bg.png')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        <h1>ARP (Address Resolution Protocol)</h1>
+                        <h2 class="subheading">How it works and the security issues it has</h2>
+                        <span class="meta">Posted by <a href="about.html">Kostas Michailidis</a> on April 23, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Post Content -->
+    <article>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                      
+
+                    <h2 class="section-heading">What is ARP?</h2>
+
+                    <p>ARP (Address Resolution Protocol) is a network protocol used to map an IP address to a physical MAC (Media Access Control) address within a local area network (LAN).</p>
+
+				
+			
+                    <h2 class="section-heading">What is an IP address?</h2>
+					<p>An IP address (Internet Protocol address) is a unique number used by devices on a computer network that uses the Internet Protocol standard for identifying and communicating with each other.</p>
+					
+					<h2 class="section-heading">What is a MAC address?</h2>
+					
+					<p>A Media Access Control (MAC) address, also known as a physical address or hardware address, is a unique identifier assigned to network interfaces for communication on the physical layer of the network.</p>
+					
+					
+					<h2 class="section-heading">How does ARP work?</h2>
+					
+					 <ul>
+                        <li><b>Sending an ARP Request:</b> When a device wants to communicate with another device on the same network but doesn't know its MAC address, it sends an ARP Request. This packet is broadcast to the entire network.</li>
+                        <li><b>Receiving an ARP Reply:</b> The device with the specific IP address responds by sending its MAC address directly to the sender.</li>
+                        <li><b>Storing in memory (ARP Cache):</b> To avoid repeating this process every time, devices maintain an ARP cache table where IP-MAC mappings are temporarily stored.</li>
+                 
+                    </ul>
+					
+					<h2 class="section-heading">How do we view the ARP Cache?</h2>
+                    <p>To view the ARP cache on our computer, we execute the following commands.</p>
+                    
+                    <p><b>Windows</b></p>
+			        </p>1. Open the Command Prompt:<br>
+                        Press Win + R, type cmd, and press Enter.<br>
+
+                        2. Type the following command:</p>
+                    <figure>
+						<img class="img-responsive" src="img/windows_command_arp.png" width="500" height="300" alt="">                      
+                    </figure>
+                   <p><b>Linux / macOS</b></p>
+                   <p>1. Open a terminal.<br>
+                      2. Run the command:</p>
+                    <figure>
+						<img class="img-responsive" src="img/arp_linux_command_1.png" width="500" height="300" alt="">                      
+                    </figure>
+                    <p>or</p>
+                   <figure>
+						<img class="img-responsive" src="img/arp_linux_command_2.png" width="500" height="300" alt="">                      
+                    </figure>
+                    <p><b>Example command on Windows:</b></p>
+                    <figure>
+						<img class="img-responsive" src="img/arp_windows_example.png" width="500" height="300" alt="">                      
+                    </figure>
+                    <h2 class="section-heading">ARP types</h2>
+
+                	<ul>
+                        <li><b>Static ARP:</b> Manual entry of IP-MAC mappings.</li>
+                        <li><b>RARP:</b> The reverse of ARP, used to find an IP address.</li>
+                        <li><b>Dynamic ARP:</b> Automatic mapping through ARP Requests/Replies.</li>
+                        <li><b>Gratuitous ARP:</b> Used to inform all devices of a change in the MAC address.</li>
+                        <li><b>Proxy ARP:</b> Allows a router to respond on behalf of another device.</li>
+                 
+                    </ul>
+                    <h2 class="section-heading">Example of ARP operation (using Cisco Packet Tracer)</h2>
+                    <figure>
+						<img class="img-responsive" src="img/arp_pt_1.png" width="700" height="500" alt="">                      
+                    </figure>
+					<p>Here we have a simple example of a local LAN network with IPs from 192.168.1.2 to 192.168.1.5.
+                    For example, we want PC0 to ping the Laptop</p>
+
+                    <figure>
+						<img class="img-responsive" src="img/arp_PC0_cmd.png" width="500" height="300" alt="">                      
+                    </figure>
+                    <p></p>
+                    <figure>
+						<img class="img-responsive" src="img/arp_pt_2.png" width="600" height="400" alt="">                      
+                    </figure>
+                    <p>We can see that PC0 prepares two packets to send: one ICMP (for the ping) and one ARP.</p>
+                    
+                    <figure>
+						<img class="img-responsive" src="img/arp_pt_3.png" width="600" height="400" alt="">                      
+                    </figure>
+                    <p>PC0 will first send an ARP packet to the switch, since it doesn't know the MAC address of the laptop.</p>
+					 <figure>
+						<img class="img-responsive" src="img/arp_pdu_pt.png" width="700" height="500" alt="">                      
+                    </figure>
+                    <p>We can view the structure of the packet in Packet Tracer. Here we see various details in the Ethernet II frame as well as in the ARP section. What's interesting is the <b>DEST ADDR</b> of the frame, which is <b>FFFF.FFFF.FFFF</b> (or FF:FF:FF:FF:FF:FF), the MAC address of the recipient — in this case, it's a <b>broadcast</b> address (meaning it's sent to everyone on the LAN).</p>
+                    
+                     <figure>
+						<img class="img-responsive" src="img/arp_pt_4.png" width="750" height="550" alt="">                      
+                    </figure>
+                   <p>The ARP packet will be sent out from all the ports of the switch since it is a broadcast. However, PC1 and PC2 will drop the packet because it is not intended for them.</p>
+                    <figure>
+						<img class="img-responsive" src="img/arp_pt_5.png" width="650" height="450" alt="">                      
+                    </figure>
+                    <p>Then, the Laptop will respond with a unicast to PC0 with an ARP reply, containing its MAC address.</p>
+                    
+                    <figure>
+						<img class="img-responsive" src="img/arp_pt_6.png" width="700" height="500" alt="">                      
+                    </figure>
+                    <p>Once PC0 receives the ARP reply, it will be able to ping the laptop by sending ICMP packets.</p>
+ 
+                    <h2 class="section-heading">ARP packets in wireshark</h2>
+                    <p>Wireshark is free and open-source network packet analysis software. It is used for network analysis, network monitoring, troubleshooting network issues, and for educational purposes.</p>
+                    <figure>
+						<img class="img-responsive" src="img/wireshark_arp_1.png" width="700" height="500" alt="">                      
+                    </figure>
+                    <p>Example of ARP packets in wireshark</p>
+                    <figure>
+						<img class="img-responsive" src="img/wireshark_arp_2.png" width="700" height="500" alt="">                      
+                    </figure>
+                    <p>Here is our computer with MAC address b0:6e:bf:84:b2:da and IP 192.168.1.107. It sends a broadcast (to ff:ff:ff:ff:ff:ff) to learn the MAC address of the computer with IP 192.168.1.11 (Target IP address).</p>
+                    <figure>
+						<img class="img-responsive" src="img/wireshark_arp_3.png" width="700" height="500" alt="">                      
+                    </figure>
+                    
+                    <p>Then we have the ARP reply from 192.168.1.11, which informs us of its MAC address: 00:24:21:61:e1:18.</p>
+
+                    <h2 class="section-heading">ARP spoofing</h2>
+                    <p>In computer networking, ARP spoofing or ARP cache poisoning is a technique in which an attacker sends 'spoofed' ARP messages on a local network. Generally, the goal is to associate the attacker's MAC address with the IP address of another host, such as the default gateway, resulting in traffic intended for that IP address being sent to the attacker.</p>
+
+                    <figure>
+						<img class="img-responsive" src="img/arp_spoof_diagram.png" width="600" height="400" alt="">                      
+                    </figure>
+                   <p>A successful ARP spoofing attack allows an attacker to change the routing in a network, essentially enabling a man-in-the-middle attack. The man-in-the-middle attack is a common security breach. The attacker intercepts legitimate communication between two parties that are 'trusted' with each other. The malicious host then controls the communication flow and can intercept or alter the information sent by one of the original participants.</p>
+ 
+
+                    <h2 class="section-heading">Representation of an ARP spoofing attack</h2>
+<p>To carry out such an attack, we need the appropriate tools. Many of these can be found in dsniff (<a href="https://www.kali.org/tools/dsniff/">https://www.kali.org/tools/dsniff/</a>) for Linux, but we can also create it in Python using <a href="https://scapy.net/">Scapy.</a></p>
+                    
+                    <figure>
+						<img class="img-responsive" src="img/python_arp_code_1.png" width="500" height="300" alt="">                      
+                    </figure>
+                    </p>This is an example of Python code for an ARP attack. Initially, it sends an ARP Request to learn the MAC address of target_ip_1. Once it receives a reply, it creates a fake ARP Reply, telling target_ip_1 that target_ip_2 (e.g., the router) has the attacker's MAC address. This means that the victim will send all its traffic to the attacker instead of the real destination. The code runs in an infinite loop, sending the fake packet every 2 seconds, maintaining the poisoned ARP cache of the victim.</p>
+                    <p>For this code to work, we need to run it twice: once to tell one host (e.g., the router) that we are the 'victim,' and once to tell the 'victim' that we are the router.</p>
+
+
+                    <figure>
+						<img class="img-responsive" src="img/bash_sc_arp.png" width="500" height="300" alt="">                      
+                    </figure>
+                    <p>A simple Bash script on Linux will do the job. First, we perform a check with the '-s' option, which essentially means to terminate the program. If we don't have '-s' as a parameter, we will start the program normally in the background with the IPs we've provided alternately, and set the value to 1 in the Linux ip_forward file. This enables the routing of ARP packets. The scripts must run as root.</p>
+                    <p><b>Note:</b></p>
+                    <p>You can find the code on my GitHub page:<br>
+<a href="https://github.com/mihkostas/pyarp">https://github.com/mihkostas/pyarp</a></p>
+
+                    <h2 class="section-heading">Code execution</h2>
+                    <figure>
+						<img class="img-responsive" src="img/code_exec_bash.png" width="700" height="500" alt="">                      
+                    </figure>
+                    <p>We run the script with the target as 192.168.1.117 and the Router as 192.168.1.1, to monitor the network traffic of 192.168.1.117. A good tool for this is Wireshark.</p>
+                    
+                    <figure>
+						<img class="img-responsive" src="img/wireshark_arp_spoof_1.png" width="700" height="500" alt="">                      
+                    </figure>
+                    <p>Here we see the network traffic in Wireshark, with 192.168.1.117 communicating with an HTTP web server. In the image below, we see the 'victim' accessing a webpage.</p>
+                    <figure>
+						<img class="img-responsive" src="img/arp_victim_pc.png" width="600" height="400" alt="">                      
+                    </figure>
+                    <p></p>
+                    <figure>
+						<img class="img-responsive" src="img/arp_term_program.png" width="600" height="400" alt="">                      
+                    </figure>
+                    <p>Program termination.</p>
+                    <p>In general, most web traffic is encrypted (e.g., HTTPS), but there are many cases where encryption is not used, such as plain HTTP, FTP, Telnet, DNS, and many other applications. It is important to monitor the default gateway of the computer to see if it has changed, especially if we suspect that something is wrong with our network.</p>
+
+                    <h2 class="section-heading">Conclusion</h2>
+					<p>The ARP (Address Resolution Protocol) is a fundamental element of communication in local networks, allowing the mapping of IP addresses to MAC addresses. Without it, devices would not be able to communicate effectively within the same network. However, due to the lack of security mechanisms in its original design, ARP is vulnerable to attacks such as ARP Spoofing, making it necessary to implement protective measures, such as static ARP entries, monitoring the default gateway, <a href="https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst4500/12-2/25ew/configuration/guide/conf/dynarp.html">Dynamic ARP Inspection (DAI)</a>, etc.</p>
+                    <p>Overall, ARP is an essential yet sensitive protocol, which requires careful management to ensure the security and efficiency of the network.</p>
+					  
+					
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <ul class="list-inline text-center">                      
+                        <li>
+                            <a href="https://github.com/mihkostas">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16">
+  					<path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			    	</svg>
+                            </a>
+                        </li>
+                    </ul>
+                    <p class="copyright text-muted">&copy; Kostas Michailidis Tech 2023</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="js/clean-blog.min.js"></script>
+
+</body>
+
+</html>
