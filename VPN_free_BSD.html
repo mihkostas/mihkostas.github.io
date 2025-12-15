@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Kostas Michailidis Tech - VPN server on freeBSD</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/clean-blog.min.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+	<style>
+		table {
+		  font-family: arial, sans-serif;
+		  border-collapse: collapse;
+		  width: 100%;
+		}
+
+		td, th {
+		  border: 1px solid #dddddd;
+		  text-align: left;
+		  padding: 8px;
+		}
+
+		tr:nth-child(even) {
+		  background-color: #dddddd;
+		}
+	</style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Kostas Michailidis Tech</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="index.html">Home</a>
+                    </li>
+                    <li>
+                        <a href="about.html">About</a>
+                    </li>                
+                    <li>
+                        <a href="contact.html">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header class="intro-header" style="background-image: url('img/VPN_on_freeBSD_thump.png')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        <h1>Installing openVPN server on freeBSD</h1>
+                        <h2 class="subheading">A secure VPN server</h2>
+                        <span class="meta">Posted by <a href="about.html">Kostas Michailidis</a> on December 15, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Post Content -->
+    <article>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <h2 class="section-heading">What is freeBSD?</h2>
+                     
+                    <p>FreeBSD is a cross-platform operating system that focuses on features, speed, and stability. It is derived from BSD, the version of UNIX® developed at the University of California, Berkeley. It is developed and maintained by a large community.
+					</p>
+                    
+                    <h2 class="section-heading">Cutting edge features</h2>
+
+                     <p>FreeBSD offers advanced networking, performance, security and compatibility features today which are still missing in other operating systems, even some of the best commercial ones.</p>
+                  
+				    <h2 class="section-heading">Powerful Internet solutions</h2>
+			         <p>FreeBSD makes an ideal Internet or Intranet server. It provides robust network services under the heaviest loads and uses memory efficiently to maintain good response times for thousands of simultaneous user processes.</p>
+
+                   <figure>
+						<img class="img-responsive" src="img/freeBSD_installer.png" alt="">                      
+                    </figure>
+					
+                    <h2 class="section-heading">Virtual Private Networks – VPN</h2>
+                    <p>One of the most important and widely used security technologies uses encryption to provide secure access to an organization's intranet from a similarly remote location, using established protocols over the standard (unsecured) Internet. This technology, known as a virtual private network (VPN), was originally designed to provide a way to interconnect multiple geographic locations within an organization at low cost.</p>
+
+                    <figure>
+						<img class="img-responsive" src="img/what_is_VPN.png" alt="">                      
+                    </figure>
+
+                    <h2 class="section-heading">OpenVPN</h2>
+                    <p>OpenVPN is an open source VPN system that implements techniques for establishing secure point-to-point or site-to-site connections for remote access.
+It implements both client and server applications.
+OpenVPN allows nodes to authenticate each other using pre-shared secret keys, certificates, or username/password. When used in a multiclient-server environment, it allows the server to issue an authentication certificate for each client, using signatures and a certificate authority (CA).
+It makes extensive use of the OpenSSL cryptography library, as well as the TLS protocol,
+and includes many security and audit features. It uses a custom security protocol that leverages SSL/TLS for key exchange. It is capable of traversing network address translators (NATs) and firewalls.</p>
+
+                   <h2 class="section-heading">freeBSD and VPN</h2>
+                   <p>Ensuring network security is one of the key responsibilities in managing an IT infrastructure. One of the best ways to create a secure connection to an insecure network (e.g. the internet) is to set up a VPN. FreeBSD is a powerful, flexible and advanced UNIX-like operating system, providing excellent support for configuring and using VPNs (e.g. openVPN).</p>
+                   
+                   <h2 class="section-heading">Installing openVPN on freeBSD</h2>
+					<p>In our example we will use a 32-bit <b>freeBSD</b> system, on an old laptop
+directly to its hardware, in the example we have connected remotely with <b>ssh</b>.</p>
+                    <figure>
+						<img class="img-responsive" src="img/system_overview.png" alt="">                      
+                    </figure>
+                    <p>The following command installs both <b>openVPN</b> and <b>easy-rsa</b>,
+easy-rsa is a CLI utility for creating and managing a PKI CA. In simpler terms,
+this means that it is used to create a root certificate authority, as well as
+submitting and signing certificates, including intermediate CAs and
+certificate revocation lists (CRL).</p>
+
+  <figure>
+						<img class="img-responsive" src="img/downlaod_vpn_rsa.png" alt="">                      
+                    </figure>
+<p>
+To do anything useful, Easy-RSA must first initialize a directory for the PKI. Multiple PKIs can be managed with a single installation of Easy-RSA, but the default directory is simply named "pki" unless otherwise specified.</p>
+
+<figure>
+						<img class="img-responsive" src="img/init_piki.png" alt="">                      
+                    </figure>
+<p>To sign requests for certificate generation, you need a CA. To create a new CA in a PKI you have created, run:</p>
+<figure>
+						<img class="img-responsive" src="img/build_ca.png" alt="">                      
+                    </figure>
+
+<p>Make sure you use a strong password to protect the CA private key.</p>
+<p>To create a full set of certificates for a server, named server1, with no password (nopass) on the private key, run:</p>
+<figure>
+						<img class="img-responsive" src="img/server_pass.png" alt="">                      
+                    </figure>
+<p>To create a full set of certificates for a client, named client1, with no password (nopass) on the private key, run:</p>
+                    <figure>
+						<img class="img-responsive" src="img/client_pass.png" alt="">                      
+                    </figure>
+<p>To generate the Diffie-Hellman parameters (DH parameters), which are necessary for secure key exchange, we will need to run the command:</p>
+<figure>
+						<img class="img-responsive" src="img/dh_par.png" alt="">                      
+                    </figure>
+<p>The command creates a large "secure" 2048-bit prime number, which is quite large
+and may take some time depending on the system.</p>
+<p>Now we will generate a symmetric key ( shared secret key ), which is stored in the <b>ta.key</b> file. This key is used by OpenVPN for the so-called TLS authentication (HMAC) or tls-auth / tls-crypt.</p>
+<figure>
+						<img class="img-responsive" src="img/gen_key_ta.png" alt="">                      
+                    </figure>
+<p>With the following commands, we transfer all the security files (certificates, keys, parameters) that we created with Easy-RSA to the folder where the OpenVPN server needs them to function.</p>
+<figure>
+						<img class="img-responsive" src="img/copy_certs.png" alt="">                      
+                    </figure>
+<p>Then we configure the <b>openvpn.conf</b> file:</p>
+
+<figure>
+						<img class="img-responsive" src="img/edit_vpn_file.png" alt="">                      
+                    </figure>
+<p>And add the following:</p>
+					<pre><code>
+## OpenVPN listening port
+port 1194
+
+## use udp in this example
+proto udp 
+
+## use tun in this example
+dev tun 
+
+## specify certificates:
+ca ca.crt
+cert issued/server1.crt
+key private/server1.key
+
+## specify DH file
+dh dh.pem
+
+##clients and server are on the same IP subnet, as if they were on a shared LAN. 
+topology subnet
+
+##specify the network to be used in the VPN (any network is fine except your local network)
+server 172.16.100.0 255.255.255.0
+
+##The server stores and remembers which IP has been given to each client in a file.
+ifconfig-pool-persist ipp.txt
+
+##your local network
+push "route 192.168.1.0 255.255.255.0"
+
+##all client Internet traffic goes through the VPN.
+push "redirect-gateway def1 bypass-dhcp"
+
+##tells the server to force the client to use the DNS server with IP 208.67.222.222
+push "dhcp-option DNS 208.67.222.222" 
+
+##tells the server to force the client to use the DNS server with IP 208.67.220.220
+push "dhcp-option DNS 208.67.220.220"
+
+##keepalive settings
+keepalive 10 120
+
+##specify the TLS-Auth key and direction.
+tls-auth ta.key 0
+
+##Enable persistence options:
+persist-key
+persist-tun
+
+##creates a log with the current VPN status.
+status openvpn-status.log
+
+##specify the log level
+verb 3
+
+##tells the server to send a message to the client when the connection terminates
+explicit-exit-notify 1
+
+					</code></pre>
+<p>the final result should be something like this:</p>
+
+<figure>
+						<img class="img-responsive" src="img/the_openvpn_conf.png" alt="">                      
+                    </figure>
+<p>Enable at boot and start openvpn</p>
+
+<figure>
+						<img class="img-responsive" src="img/start_openvpn.png" alt="">                      
+                    </figure>
+
+<p>Enable IP packet forwarding in the system (IP forward).</p>
+
+
+<figure>
+						<img class="img-responsive" src="img/IP_forward.png" alt="">                      
+                    </figure>
+<p>Next we configure <b>pf.conf</b>, Packet Filter (referred to as <b>PF</b>) is the <b>OpenBSD</b> system for filtering TCP/IP traffic and performing NAT. PF is also capable of smoothing and regulating TCP/IP traffic, as well as providing bandwidth control and packet prioritization. Since <b>FreeBSD</b> version 5.3, a version of the <b>OpenBSD PF</b> firewall has been included as an integrated part of the base system.</p>
+<figure>
+						<img class="img-responsive" src="img/edit_pf.png" alt="">                      
+                    </figure>
+
+<p>We add the following:</p>
+
+<figure>
+						<img class="img-responsive" src="img/PF_config.png" alt="">                      
+                    </figure>
+
+<p>We change <b>“re0”</b> with the network interface we have</p>
+
+<p>Then we start pf:</p>
+
+
+
+<figure>
+						<img class="img-responsive" src="img/pf_log_enable.png" alt="">                      
+                    </figure>
+
+<p></p>
+
+<figure>
+						<img class="img-responsive" src="img/pf_enable.png" alt="">                      
+                    </figure>
+<p></p>
+
+<figure>
+						<img class="img-responsive" src="img/pf_start.png" alt="">                      
+                    </figure>
+<p></p>
+
+<figure>
+						<img class="img-responsive" src="img/pf_log_start.png" alt="">                      
+                    </figure>
+
+
+<p><b>NOTE:</b><br>
+If your openvpn server is running in a virtual machine, disable
+checksum offloading, (<b>vtnet0</b> is the interface in the example).</p>
+
+<figure>
+						<img class="img-responsive" src="img/vm_settings_vpn.png" alt="">                      
+                    </figure>
+
+ <h2 class="section-heading">Port forward and DDNS</h2>
+
+<p><b>Port forwarding</b> is a process that allows a computer or device within your network to "accept" connections from the external network (e.g. the Internet) and forward them to the appropriate system. <b>DDNS</b> (Dynamic Domain Name System) on the other hand is a service that allows you to have a fixed domain name, even if your network's IP address changes constantly. In our case, because we have both a dynamic IP and are behind NAT, we will use both to be able to access our server via the Internet.</p>
+
+<p>We enter the router settings for <b>port forwarding</b> and match the IP of our server on the LAN with the port we have set in OpenVPN (e.g. 1194), and the protocol (which here is UDP).</p>
+
+<figure>
+						<img class="img-responsive" src="img/port_forward.png" alt="">                      
+                    </figure>
+<p>In addition, we configure DDNS through the provider (e.g. no-ip).</p>
+
+<figure>
+						<img class="img-responsive" src="img/no-ip.png" alt="">                      
+                    </figure>
+<p>In addition, we configure DDNS through the router.</p>
+
+<figure>
+						<img class="img-responsive" src="img/router_no-ip.png" alt="">                      
+                    </figure>
+
+<h2 class="section-heading">Installing the OpenVPN Client</h2>
+
+
+<p>The <b>OpenVPN</b> client (i.e. the user program) can be installed on many platforms such as Windows, Linux, macOS, iOS and Android. In our example, we will install it on <b>Android</b>. The installation steps may vary, but the graphical environment of the application is similar.</p>
+
+<p>But before we get to the installation, we need to create a <b>*.ovpn</b> file that contains the certificates and keys we created, where can we find them:</p>
+
+<figure>
+						<img class="img-responsive" src="img/key_files_of_vpn_client.png" alt="">                      
+                    </figure>
+<p></p>
+<figure>
+						<img class="img-responsive" src="img/tree_struct.png" alt="">                      
+                    </figure>
+<p>the file will have the format:</p>
+
+<figure>
+						<img class="img-responsive" src="img/client_vpn_file.png" alt="">                      
+                    </figure>
+<p>and save the file to the device</p>
+
+<p>Then we install the openVPN client, from google play or f-droid or from apk:</p>
+
+
+<figure>
+						<img class="img-responsive" src="img/google-play-openvpn-for-android.png" alt="">                      
+                    </figure>
+
+<p>Open the application and select the import icon.</p>
+
+<figure>
+						<img class="img-responsive" src="img/import_vpn.jpg" width="400" height="200" alt="">                      
+                    </figure>
+
+<p>We select the file <b>client1.ovpn</b></p>
+
+
+<figure>
+						<img class="img-responsive" src="img/select_vpn_file.jpg" width="400" height="200" alt="">                      
+                    </figure>
+<p>Then we select the profile:</p>
+
+
+<figure>
+						<img class="img-responsive" src="img/select_vpn_profile.jpg" width="400" height="200" alt="">                      
+                    </figure>
+
+<p>Once we see <b>Sequence Completed</b>, it means we are connected.</p>
+
+<figure>
+						<img class="img-responsive" src="img/connect_to_vpn.jpg" width="400" height="200" alt="">                      
+                    </figure>
+
+<p>Example of connecting to the VPN</p>
+
+<figure>
+						<img class="img-responsive" src="img/ip_with_vpn.jpg" width="400" height="200" alt="">                      
+                    </figure>
+
+<p>Example of connection <b>without</b> VPN</p>
+
+<figure>
+						<img class="img-responsive" src="img/ip_without_vpn.jpg" width="400" height="200" alt="">                      
+                    </figure>
+<h3 class="section-heading">Sources</h3>
+
+<ol>
+  <li>
+    FreeBSD Project. (2025). <i>About FreeBSD</i>.
+    Available at:
+    <a href="https://www.freebsd.org/about/" target="_blank" style="color: #1a73e8;">
+      https://www.freebsd.org/about/
+    </a>
+  </li>
+
+  <li>
+    Server World. (2024). <i>OpenVPN Server Configuration on FreeBSD 14</i>.
+    Available at:
+    <a href="https://www.server-world.info/en/note?os=FreeBSD_14&p=openvpn&f=1"
+       target="_blank" style="color: #1a73e8;">
+      https://www.server-world.info/en/note?os=FreeBSD_14&p=openvpn&f=1
+    </a>
+  </li>
+
+  <li>
+    Wikipedia. (2025). <i>OpenVPN</i>.
+    Available at:
+    <a href="https://en.wikipedia.org/wiki/OpenVPN" target="_blank" style="color: #1a73e8;">
+      https://en.wikipedia.org/wiki/OpenVPN
+    </a>
+  </li>
+
+  <li>
+    Comer, D. E. (2014). <i>Computer Networks and Internets</i> (6th Edition).
+  </li>
+
+  <li>
+    FreeBSD Documentation Project. (2025).
+    <i>FreeBSD Handbook – Chapter 33: Firewalls</i>.
+    Available at:
+    <a href="https://docs.freebsd.org/en/books/handbook/firewalls/"
+       target="_blank" style="color: #1a73e8;">
+      https://docs.freebsd.org/en/books/handbook/firewalls/
+    </a>
+  </li>
+
+  <li>
+    OpenBSD Project. (2025). <i>PF: The OpenBSD Packet Filter</i>.
+    Available at:
+    <a href="https://www.openbsd.org/faq/pf/" target="_blank" style="color: #1a73e8;">
+      https://www.openbsd.org/faq/pf/
+    </a>
+  </li>
+
+  <li>
+    Mihkostas. (2024). <i>FreeBSD Installation</i>.
+    Available at:
+    <a href="https://mihkostas.github.io/free_BSD.html"
+       target="_blank" style="color: #1a73e8;">
+      https://mihkostas.github.io/free_BSD.html
+    </a>
+  </li>
+
+  <li>
+    EasyRSA 3 HOWTO, OpenVPN Community Wiki.
+    Available at:
+    <a href="https://community.openvpn.net/Pages/EasyRSA3-OpenVPN-Howto"
+       target="_blank" style="color: #1a73e8;">
+      https://community.openvpn.net/Pages/EasyRSA3-OpenVPN-Howto
+    </a>
+  </li>
+</ol>
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <ul class="list-inline text-center">                      
+                        <li>
+                            <a href="https://github.com/mihkostas">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16">
+  					<path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			    	</svg>
+                            </a>
+                        </li>
+					<li>
+                            <a href="https://www.youtube.com/@mihkostas1340">
+                                 <i class="fa fa-youtube-play" style="font-size:40px"></i>
+                            </a>
+                    </li>
+                    </ul>
+                    <p class="copyright text-muted">&copy; Kostas Michailidis Tech 2023</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="js/clean-blog.min.js"></script>
+
+</body>
+
+</html>
+
