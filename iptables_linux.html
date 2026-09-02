@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Kostas Michailidis Tech - iptables</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/clean-blog.min.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+	<style>
+		table {
+		  font-family: arial, sans-serif;
+		  border-collapse: collapse;
+		  width: 100%;
+		}
+
+		td, th {
+		  border: 1px solid #dddddd;
+		  text-align: left;
+		  padding: 8px;
+		}
+
+		tr:nth-child(even) {
+		  background-color: #dddddd;
+		}
+	</style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Kostas Michailidis Tech</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="index.html">Home</a>
+                    </li>
+                    <li>
+                        <a href="about.html">About</a>
+                    </li>                
+                    <li>
+                        <a href="contact.html">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header class="intro-header" style="background-image: url('img/1_image_iptables.png')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        <h1>Using iptables</h1>
+                        <h2 class="subheading">The main firewall of Linux</h2>
+                        <span class="meta">Posted by <a href="about.html">Kostas Michailidis</a> on September 3, 2026</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Post Content -->
+    <article>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <h2 class="section-heading">What iptables are?</h2>
+                     
+                    <p>
+iptables is used to configure, maintain, and inspect the tables of IP packet filtering rules in the Linux kernel. Several different tables can be defined. Each table contains a number of built-in chains and may also contain user-defined chains.<br>
+
+Each chain is a list of rules that can match a set of packets. Each rule specifies what should be done with a packet that matches it. This is called the <b>target</b>, which can also be a <b>jump</b> to a user-defined chain within the same table.<br>
+
+A firewall rule specifies criteria for a packet and a target. If the packet does not match the rule, the next rule in the chain is examined. If it does match, the next action is determined by the value of the target, which can be the name of a user-defined chain or one of the special values <b>ACCEPT, DROP, QUEUE,</b> or <b>RETURN</b>.</p>
+<p>
+<b>ACCEPT</b> means that the packet is allowed to pass through.<br>
+
+<b>DROP</b> means that the packet is completely discarded.<br>
+
+<b>QUEUE</b> means that the packet is passed to <b>userspace</b>.<br>
+(How a packet can be received by a userspace process depends on the particular queue handler. Linux kernels 2.4.x and 2.6.x up to version 2.6.13 include the ip_queue queue handler. Kernels 2.6.14 and later additionally include the nfnetlink_queue queue handler. Packets with the <b>QUEUE</b> target are sent to queue number <b>0</b> in this case.)</p>
+<p>
+<b>RETURN</b> means that processing of the current chain stops and continues with the next rule in the previous (calling) chain. If the end of a built-in chain is reached, or if a rule in a built-in chain is matched with the <b>RETURN</b> target, the chain's <b>policy</b> determines the final fate of the packet.
+
+					</p>
+                    
+				   
+                    <figure>
+						<img class="img-responsive" src="img/2_image_iptables.png" alt="">
+                    </figure>
+
+					  <p>
+At the moment, there are three independent tables, although which tables are available at any given time depends on the Linux kernel configuration options and on the modules that are installed or loaded.<br>
+
+The <b>-t</b> or <b>--table</b> option specifies the packet-matching table on which the command will operate. If the kernel is configured to load modules automatically, an attempt will be made to load the appropriate module for the specified table if it is not already available.</p>
+<p>
+The <b>filter</b> table is the default table when the -t option is not used. It contains the built-in chains <b>INPUT</b> (similar to inbound traffic), which concerns packets destined for the local system; FORWARD, which concerns packets routed through the system; and <b>OUTPUT</b> (similar to outbound traffic), which concerns packets generated locally.
+
+The <b>nat</b> table is used when a packet creates a new connection. It contains the built-in chains <b>PREROUTING</b>, for modifying packets immediately after they enter the system; <b>OUTPUT</b>, for modifying locally generated packets before routing; and POSTROUTING, for modifying packets shortly before they leave the system.</p>
+<p>
+The <b>mangle</b> table is used for specialized packet modifications. Up to Linux kernel version 2.4.17, it contained only the PREROUTING and OUTPUT chains. From version 2.4.18 onward, it also supports the INPUT chain, for packets entering the system itself; FORWARD, for packets routed through the system; and POSTROUTING, for packets that are about to leave the system.
+
+The raw table is used mainly to configure exceptions to connection tracking, in conjunction with the NOTRACK target. This table is registered with the Netfilter hooks at a higher priority and therefore runs before ip_conntrack or any other IP table. It contains the PREROUTING chain, for packets arriving through any network interface, and the OUTPUT chain, for packets generated by local processes.
+
+</p>
+
+                    <figure>
+						<img class="img-responsive" src="img/3_image_iptables.png" alt="">
+                    </figure>
+<p>
+<b>iptables</b> are pre-installed on most Linux distributions. In our example, we will use a Debian 11 machine, and to check whether iptables is installed and which version is installed, we run the following command (using <b>sudo</b> for full privileges, or logging in as root, which is not particularly recommended).
+</p>
+
+                    <figure>
+						<img class="img-responsive" src="img/4_image_iptables.png" alt="">
+                    </figure>
+
+<p>For now, we will focus on the <b>filter table</b>, which is the simplest and most basic one. To see what rules we have, we run:</p>
+
+                    <figure>
+						<img class="img-responsive" src="img/5_image_iptables.png" alt="">
+                    </figure>
+<p>
+Below, we can see the results for the rules of each <b>chain</b>. We don't have any rules configured at the moment, so they are all empty.
+</p>
+
+                    <figure>
+						<img class="img-responsive" src="img/6_image_iptables.png" alt="">
+                    </figure>
+
+<p>
+We can also see that the policy is set to <b>ACCEPT</b>. This means that by default, when there is no rule that matches the traffic, the traffic is allowed. In our case, this means that all traffic is allowed.
+</p>
+<p>
+To begin, let's run a test. I will try to connect from my main machine (Linux Mint) to the Debian 11 VM via SSH, which I already have installed.
+</p>
+
+                    <figure>
+						<img class="img-responsive" src="img/7_image_iptables.png" alt="">
+                    </figure>
+<p>
+(We can see that we have access.)
+</p>
+
+<p>
+Let's run the following command now:
+</p>
+
+<figure>
+						<img class="img-responsive" src="img/8_image_iptables.png" alt="">
+                    </figure>
+
+<p>
+Now, if we try to connect from our main machine using SSH, we’ll notice that we’ll be waiting forever. This happens because we set the INPUT policy to DROP, meaning that the default behavior is to DROP everything. Since we don’t have any other rule here to ACCEPT (a.k.a. permit) the traffic, all inbound traffic to the Debian server is blocked.
+</p>
+
+                    <figure>
+						<img class="img-responsive" src="img/9_image_iptables.png" alt="">
+                    </figure>
+
+<p>Let's set it back to ACCEPT for now.</p>
+
+ <figure>
+						<img class="img-responsive" src="img/10_image_iptables.png" alt="">
+                    </figure>
+
+
+<p><b>Options/COMMANDS</b></p>
+
+<p>
+iptables has a number of options (or <b>flags</b>) that we write as part of a command. These options determine the specific action that will be performed. Only one of these can be specified on the command line, unless stated otherwise below. For all long versions of commands and option names, you only need to use enough letters for iptables to distinguish them from all other available options. Some of the basic options are:
+
+<b>-A, --append</b> chain rule-specification
+Append one or more rules to the end of the selected chain. When the source and/or destination names resolve to multiple addresses, a rule will be added for every possible combination of addresses.
+
+<b>-D, --delete</b> chain rule-specification
+-D, --delete chain rulenum
+Delete one or more rules from the selected chain. There are two versions of this command: the rule can be specified either by its number within the chain (starting from 1 for the first rule) or by specifying the rule description that we want to match.
+
+<b>-I, --insert</b> chain [rulenum] rule-specification
+Insert one or more rules into the selected chain at a specific position (rule number). If the rule number is 1, the rule or rules are inserted at the beginning of the chain. This is also the default if no rule number is specified.
+
+<b>-R, --replace</b> chain rulenum rule-specification
+Replace a rule in the selected chain. If the source and/or destination names resolve to multiple addresses, the command will fail. Rules are numbered starting from 1.
+
+<b>-L, --list</b> [chain]
+List all rules in the selected chain. If no chain is specified, all chains are displayed. As with every other iptables command, this is applied to the specified table (the default is the filter table).
+</p>
+
+<p>Let's now write a basic command that will prevent our machine (Debian 11) from communicating with the IP address 8.8.4.4.</p>
+
+<figure>
+						<img class="img-responsive" src="img/11_image_iptables.png" alt="">
+                    </figure>
+<p>What we did was select the filter table (which is the default anyway), the <b>OUTPUT chain</b> for packets sent from the machine to a destination, and we will append it, meaning we will add it to the end of the list (although it doesn't really matter, since it is the only rule we have). Then, we specify the destination IP (e.g., 8.8.4.4) and the action. Here, we want to set it to DROP (a.k.a. deny).</p>
+<p>Below, we can list the filter table:</p>
+<figure>
+						<img class="img-responsive" src="img/12_image_iptables.png" alt="">
+                    </figure>
+<p>We can see that our rule has been added, and the domain name has also been automatically looked up (8.8.4.4 resolves to dns.google).</p>
+<p>Now, if we ping, we can see that we are unable to send packets to this IP address.</p>
+
+<figure>
+						<img class="img-responsive" src="img/13_image_iptables.png" alt="">
+                    </figure>
+<p>We've added the rule, but there's one problem: iptables rules are not automatically saved after a reboot. We need the <b>iptables-persistent</b> package.</p>
+
+<figure>
+						<img class="img-responsive" src="img/14_image_iptables.png" alt="">
+                    </figure>
+
+<p>During the installation process, we will be asked whether we want to save our rules, so we’re all set.
+</p>
+<p>
+
+Now, for next time, we switch to root and run the following command so that our rules are saved every time we make a change.</p>
+
+<figure>
+						<img class="img-responsive" src="img/15_image_iptables.png" alt="">
+                    </figure>
+
+<p>
+
+Now that we’ve seen rules that apply to the machine itself, let’s look at the case of forwarding that is, rules related to packets that the machine routes/forwards but that are not generated by the machine itself. In simple terms, we’ll make it work like a router with some rules in place.
+</p>
+<p>
+First, we’ll log in as root (using <b>sudo su</b>), and then we’ll run the following command to change the value of the <b>ip_forward</b> file to 1 (i.e., true).
+</p>
+
+<figure>
+						<img class="img-responsive" src="img/16_image_iptables.png" alt="">
+                    </figure>
+<p>Then, if we want it to remain enabled even after a reboot, we edit the following file.</p>
+
+<figure>
+						<img class="img-responsive" src="img/17_image_iptables.png" alt="">
+                    </figure>
+<p>And we add the following.</p>
+
+<figure>
+						<img class="img-responsive" src="img/18_image_iptables.png" alt="">
+                    </figure>
+
+<p>
+Now we’ll use another device as a host that will use our router for example, an Android phone. The router can be our VM (Debian 11), but it doesn’t really matter since we’ve bridged it to our network.
+</p>
+<p>
+First, we’ll change the phone’s default gateway so that the packets are sent through it.
+</p>
+
+                  <center>
+                    <figure>
+						<img class="img-responsive" src="img/19_image_iptables.png" width="300" height="800" alt="">
+                    </figure>
+                  </center>
+<p>(the IP of the VM is 192.168.1.96)</p>
+
+<p>Now let’s try pinging without having added any rules.</p>
+
+                  <center>
+                    <figure>
+						<img class="img-responsive" src="img/20_image_iptables.png" width="300" height="800" alt="">
+                    </figure>
+                  </center>
+<p>(We can see that the pings are working normally.)</p>
+
+<p>Now, even though we have a rule to drop packets in the OUTPUT chain, it continues to route them normally to <b>8.8.4.4</b>. This happens because we don’t have a rule in the <b>FORWARD chain</b>. To do this, we run the following command.</p>
+
+<figure>
+						<img class="img-responsive" src="img/21_image_iptables.png" alt="">
+                    </figure>
+
+
+<p>
+(Now we can see the rules in both chains.)
+</p>
+<p>
+Now that we’ve done that, let’s try pinging from the host.
+</p>
+
+                    <figure>
+						<img class="img-responsive" src="img/22_image_iptables.png" alt="">
+                    </figure>
+
+<p>(We can see that we have <b>100% packet loss</b>, meaning that the pings are not working.)</p>
+
+<p>To delete them, we first list them by number using the following command:</p>
+
+<figure>
+						<img class="img-responsive" src="img/23_image_iptables.png" alt="">
+                    </figure>
+<p>And we delete it using the <b>-D</b> flag, followed by our chain and the rule number.</p>
+
+<figure>
+						<img class="img-responsive" src="img/24_image_iptables.png" alt="">
+                    </figure>
+<p>And</p>
+<figure>
+						<img class="img-responsive" src="img/25_image_iptables.png" alt="">
+                    </figure>
+
+<p>(We can also specify the table, although here the default is filter, even if we don’t include it.)</p>
+
+
+<h2 class="section-heading">Final takeaway</h2>
+
+<p>The final takeaway regarding iptables is that it is a very useful tool for routers, firewalls, and servers. We’ve only scratched the surface with a few examples, but its use cases can be extended much further.</p>
+
+
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <ul class="list-inline text-center">                      
+                        <li>
+                            <a href="https://github.com/mihkostas">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16">
+  					<path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			    	</svg>
+                            </a>
+                        </li>
+						<li>
+                            <a href="https://www.youtube.com/@mihkostas1340">
+                                 <i class="fa fa-youtube-play" style="font-size:40px"></i>
+                            </a>
+                        </li>
+                    </ul>
+                    <p class="copyright text-muted">&copy; Kostas Michailidis Tech 2023</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="js/clean-blog.min.js"></script>
+
+</body>
+
+</html>
+
